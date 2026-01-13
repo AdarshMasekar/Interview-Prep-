@@ -4,6 +4,86 @@
  * Link: https://neetcode.io/problems/anagram-groups/question
  *
  * Category: Strings / Arrays
+ * Pattern: Hash Map + Frequency Count
+ * Difficulty: Medium
+ *
+ * Key Insight:
+ * - Anagrams have identical character frequencies.
+ * - Instead of sorting (O(k log k)), we can represent each
+ *   string by a fixed-size frequency array of 26 letters.
+ * - This frequency array can be converted into a unique key.
+ *
+ * Approach:
+ * 1. Initialize an empty Map
+ * 2. For each string:
+ *    - Create a frequency array of size 26
+ *    - Count occurrences of each character
+ *    - Convert the frequency array into a string key
+ * 3. Use the key to group original strings in the Map
+ * 4. Return all grouped values
+ *
+ * Time Complexity:
+ * - O(n * k)
+ *   where n = number of strings, k = max length of a string
+ *
+ * Space Complexity:
+ * - O(n * k) for storing grouped strings and keys
+ *
+ * Edge Cases:
+ * - Empty input array → []
+ * - Single string → [[string]]
+ * - Multiple identical strings
+ *
+ * -------------------------------------------------------
+ */
+
+class Solution {
+  /**
+   * @param {string[]} strs
+   * @return {string[][]}
+   */
+  groupAnagrams(strs) {
+    const map = new Map();
+
+    for (const str of strs) {
+      const freqArray = Array(26).fill(0);
+
+      for (const ch of str) {
+        freqArray[ch.charCodeAt(0) - 97]++;
+      }
+
+      // Use delimiter to avoid key collision
+      const key = freqArray.join("#");
+
+      if (!map.has(key)) {
+        map.set(key, []);
+      }
+
+      map.get(key).push(str);
+    }
+
+    return [...map.values()];
+  }
+}
+
+/**
+ * Revision Notes:
+ * - More optimal than sorting-based approach
+ * - Fixed-size frequency array guarantees consistent keys
+ * - Delimiter (#) avoids ambiguity in key generation
+ */
+
+
+
+// ---
+
+
+/**
+ * -------------------------------------------------------
+ * Problem: Group Anagrams
+ * Link: https://neetcode.io/problems/anagram-groups/question
+ *
+ * Category: Strings / Arrays
  * Pattern: Hash Map + Sorting
  * Difficulty: Medium
  *
