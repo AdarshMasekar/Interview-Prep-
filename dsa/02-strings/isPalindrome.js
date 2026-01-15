@@ -33,6 +33,37 @@
  * -------------------------------------------------------
  */
 
+// Solution with O(1) space
+class Solution {
+    /**
+     * @param {string} s
+     * @return {boolean}
+     */
+    isPalindrome(s) {
+        let start = 0;
+        let end = s.length - 1;
+
+        while(start < end){
+            if(s[start].toLocaleLowerCase() == s[end].toLocaleLowerCase()){
+                start++;
+                end--;
+            }else if(start < end && !this.isValidChar(s[start])){
+                start++;
+            }else if(start < end && !this.isValidChar(s[end])){
+                end--;
+            }else{
+                return false;
+            }
+        }
+        return true;
+    }
+
+    isValidChar(char){
+        return (char >= 'a' && char <= 'z' || char >= 'A' && char <= 'Z' || char >= '0' && char <='9');
+    }
+}
+
+
 class Solution {
   /**
    * @param {string} s
