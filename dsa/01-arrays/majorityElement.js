@@ -4,25 +4,31 @@
  * Link: https://leetcode.com/problems/majority-element/
  *
  * Category: Arrays
- * Pattern: Hash Map / Frequency Counting
+ * Pattern: Boyer–Moore Voting Algorithm
  * Difficulty: Easy
  *
  * Key Insight:
  * - The majority element appears more than ⌊n / 2⌋ times.
- * - Counting frequencies guarantees finding the majority element.
+ * - By canceling out different elements, the majority
+ *   element always survives as the final candidate.
  *
  * Approach:
- * 1. Use a Map to count frequency of each number
- * 2. Traverse the Map and return the element
- *    whose frequency is greater than n / 2
+ * 1. Initialize:
+ *    - candidate = 0
+ *    - count = 0
+ * 2. Traverse the array:
+ *    - If count == 0 → update candidate
+ *    - If current element == candidate → increment count
+ *    - Else → decrement count
+ * 3. Return candidate
  *
  * Time Complexity: O(n)
- * Space Complexity: O(n)
+ * Space Complexity: O(1)
  *
  * Edge Cases:
  * - Single element array
- * - All elements same
- * - Majority element appears early or late
+ * - All elements identical
+ * - Majority element at the end
  *
  * -------------------------------------------------------
  */
@@ -32,26 +38,25 @@
  * @return {number}
  */
 var majorityElement = function (nums) {
-  const map = new Map();
+  let candidate = 0;
+  let count = 0;
 
-  // Step 1: Count frequencies
   for (let num of nums) {
-    map.set(num, (map.get(num) || 0) + 1);
-  }
+    if (count === 0) candidate = num;
 
-  // Step 2: Find majority element
-  for (let key of map.keys()) {
-    if (map.get(key) > nums.length / 2) {
-      return key;
+    if (num === candidate) {
+      count += 1;
+    } else {
+      count -= 1;
     }
   }
 
-  return 0;
+  return candidate;
 };
 
 /**
  * Revision Notes:
- * - Simple and intuitive solution
- * - Uses extra space
- * - Can be optimized using Boyer-Moore Voting Algorithm (O(1) space)
+ * - Optimal solution with constant space
+ * - Relies on the guarantee that a majority element exists
+ * - Commonly tested algorithm in interviews
  */
